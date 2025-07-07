@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Sign Translator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 flex flex-col items-center justify-center min-h-screen p-4">
+
+  <h1 class="text-3xl font-bold mb-4">Live Hospital Sign Translator</h1>
+
+  <div class="bg-white shadow-xl rounded-2xl p-4 w-full max-w-xl flex flex-col items-center">
+    <video id="webcam" autoplay playsinline class="rounded-xl mb-4 w-full aspect-video bg-black"></video>
+
+    <div id="result" class="text-center mt-2">
+      <p class="text-xl font-semibold">Prediction: <span id="label">-</span></p>
+      <p class="text-lg text-gray-600">Confidence: <span id="confidence">-</span></p>
+    </div>
+  </div>
+
+  <script>
+    const video = document.getElementById('webcam');
+    const labelElem = document.getElementById('label');
+    const confidenceElem = document.getElementById('confidence');
+
+    // Start webcam
+    async function startWebcam() {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      video.srcObject = stream;
+    }
+
+    startWebcam();
+
+    function captureAndSend() {
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0);
+
+      canvas.toBlob(async (blob) => {
+        if (!blob) return;
+
+        const formData = new FormData();
+        formData.append('file', blob, 'frame.jpg');
+
+        try {
+          const res = await fetch('http://localhost:8000/predict', {
+            method: 'POST',
+            body: formData
+          });
+
+          const data = await res.json();
+          if (data.label) {
+            labelElem.textContent = data.label;
+            confidenceElem.textContent = (data.confidence * 100).toFixed(1) + '%';
+          } else {
+            labelElem.textContent = '-';
+            confidenceElem.textContent = '-';
+          }
+        } catch (err) {
+          console.error('Prediction error:', err);
+        }
+      }, 'image/jpeg');
+    }
+
+    // Capture every 1 second
+    setInterval(captureAndSend, 1000);
+  </script>
+</body>
+</html>

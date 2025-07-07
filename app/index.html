@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Anna</title>
+    <link rel="stylesheet" href="output.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- <script src="https://code.responsivevoice.org/responsivevoice.js?key=j6hBd976"></script> -->
+    <style>
+      body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <h2
+      class="bg-blue-500 text-white p-5 flex justify-between text-xl font-bold"
+    >
+      <nav class="flex items-center gap-4">
+        <nav class="w-5 h-5 bg-white rounded-full"></nav>
+        <span>Anna</span>
+      </nav>
+      <span> Sign Language Translator</span>
+      <nav></nav>
+    </h2>
+    <div class="flex h-screen">
+      <div class="flex-1 p-10">
+        <nav class="rounded-xl border-1 overflow-hidden">
+          <img id="video" width="720" height="480" />
+        </nav>
+        <div class="text-2xl font-bold p-5 text-center" id="label"></div>
+        <div class="flex items-center mt-10 gap-4">
+          <div class="relative inline-block w-11 h-5">
+            <input
+              checked
+              id="switch-component"
+              type="checkbox"
+              class="peer appearance-none w-11 h-5 bg-slate-100 rounded-full checked:bg-slate-800 cursor-pointer transition-colors duration-300"
+            />
+            <label
+              for="switch-component"
+              class="absolute top-0 left-0 w-5 h-5 bg-white rounded-full border border-slate-300 shadow-sm transition-transform duration-300 peer-checked:translate-x-6 peer-checked:border-slate-800 cursor-pointer"
+            >
+            </label>
+          </div>
+
+          <span class="font-bold">voice</span>
+        </div>
+        <div class="mt-10">
+          <nav>Detection Language: Swahili</nav>
+        </div>
+      </div>
+      <div class="flex-1 p-10 border-l-1">
+        <h2 class="font-bold mb-5">Sign Language Translator</h2>
+        <input
+          type="text"
+          class="border-1 p-2 w-full font-bold"
+          id="texttosign"
+        />
+        <button
+          class="bg-blue-500 text-white w-full mt-5 p-2 rounded-md font-bold"
+          id="texttosignbtn"
+        >
+          Translator
+        </button>
+        <nav class="rounded-xl border-1 overflow-hidden mt-5 scale-0.9">
+          <img id="video1" width="720" height="380" src="burn.gif" />
+        </nav>
+      </div>
+    </div>
+    <script src="renderer.js"></script>
+  </body>
+</html>
